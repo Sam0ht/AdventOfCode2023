@@ -17,8 +17,6 @@ for rownum, row in enumerate(universe):
     if all(not c for c in row):
         blank_rows.append(rownum)
 
-# for blank in blank_rows[::-1]:
-#     universe.insert(blank, [False] * universe_width)
 
 blank_cols = []
 
@@ -28,13 +26,6 @@ universe_height = len(universe)
 for col_num in range(universe_width):
     if all(not row[col_num] for row in universe):
         blank_cols.append(col_num)
-
-
-# for blank in blank_cols[::-1]:
-#     for row in universe:
-#         row.insert(blank, False)
-
-# draw()
 
 
 universe_width = len(universe[0])
