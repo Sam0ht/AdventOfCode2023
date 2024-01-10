@@ -1,3 +1,4 @@
+import sys
 from typing import List
 
 
@@ -64,6 +65,8 @@ class Map:
 
         return processed_ranges + unprocessed_ranges
 
+def flatten(lol):
+    return [item for sublist in lol for item in sublist]
 
 with open("input.txt") as infile:
     indata = infile.read()
@@ -75,28 +78,21 @@ with open("input.txt") as infile:
 
     maps = [Map.from_chunk(chunk.strip()) for chunk in maps_chunks]
 
-    lowest_location = None
-
+    locations = []
     for seed in seeds:
         current = seed
         for map in maps:
             current = map.convert(current)
         assert map.output == "location"
-        if lowest_location is None or current < lowest_location:
-            lowest_location = current
+        locations.append(current)
 
-    print("The lowest single seed number is", lowest_location)
+    print("The lowest single seed number is", min(locations))
 
     seed_ranges = [range(seeds[i], seeds[i] + seeds[i+1]) for i in range(0, len(seeds), 2)]
 
-
     current_ranges = [r for r in seed_ranges]
     for map in maps:
-        next_ranges = []
-        for current_range in current_ranges:
-            next_ranges.extend(map.convert_range(current_range))
-        current_ranges = next_ranges
-
+        current_ranges = flatten([map.convert_range(current_range) for current_range in current_ranges])
 
     print("The range lowest is", min(r.start for r in current_ranges))
 
